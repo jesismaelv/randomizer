@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title> RandomizerV1 </title>
+</head>
+<body class="ruleta__wrapper">
+  <style>
+    * {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  outline-color: transparent;
+  outline-style: none;
+  outline-width: 0px;
+}
+
+*:focus, *:hover {
+  outline-color: transparent;
+  outline-style: none;
+  outline-width: 0px;
+}
+
+body {
+  background-color: #252525;
+  color: white;
+}
+
+.ruleta__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.button-toggle-list {
+  position: absolute;
+  top: 20px;
+  right: -50px;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 0 50% 50% 0;
+}
+
+.button-toggle-list:hover {
+  background-color: #666;
+  cursor: pointer;
+}
+
+.ruleta__scroller {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 100px;
+  overflow: auto;
+}
+
+.ruleta__options {
+  position: relative;
+  background-color: #333;
+  width: 0;
+  -webkit-transition: opacity 0.5s ease;
+  transition: opacity 0.5s ease;
+}
+
+.ruleta__options.--active {
+  padding: 15px;
+  width: 33%;
+  min-width: 250px;
+  max-width: 400px;
+}
+
+.ruleta__options.--active .button-add {
+  display: inline-block;
+}
+
+.ruleta__options .button-add {
+  display: none;
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
+}
+
+@media screen and (min-width: 0) and (max-width: 600px) {
+  .ruleta__options {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+  }
+}
+
+.ruleta__list {
+  width: 100%;
+  list-style: none;
+}
+
+.ruleta__option {
+  background-color: #444;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  position: relative;
+  -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid #444;
+}
+
+.ruleta__option [data-option] {
+  background-color: transparent;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  font-size: 15px;
+  color: white;
+  padding: 1em 0.5em;
+}
+
+.ruleta__option:hover {
+  background-color: #666;
+  cursor: pointer;
+}
+
+.ruleta__option.--disabled {
+  opacity: 0.3;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.ruleta__option.--current {
+  border: 1px solid white;
+}
+
+.ruleta__option.--chosen {
+  border: 1px solid #093;
+}
+
+.button-remove {
+  color: white;
+  position: absolute;
+  right: 0px;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  background-color: transparent;
+  border: none;
+  font-family: monospace;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 10px;
+  text-align: center;
+  background-color: #555;
+}
+
+.button-remove:hover {
+  background-color: #777;
+}
+
+.button-remove:active {
+  background-color: #f33;
+}
+
+.button-add, .button-control {
+  display: inline-block;
+  background-color: #093;
+  font-size: 12px;
+  padding: 0.8em 0.8em 0.7em;
+  border-radius: 10px;
+  border: 0px solid transparent;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.button-add:hover, .button-control:hover {
+  background-color: #071;
+}
+
+.button-add:active, .button-add.--active, .button-control:active, .button-control.--active {
+  background-color: #050;
+}
+
+.ruleta__answer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.ruleta__answer__container {
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  font-size: 15px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.uptitle {
+  font-size: 1.1em;
+  font-weight: normal;
+  color: #CCC;
+}
+
+.title {
+  font-size: 1.6em;
+  margin: 0.5em 0;
+}
+
+.subtitle {
+  color: #CCC;
+  font-size: 0.9em;
+  font-weight: normal;
+}
+
+.ruleta__controls {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+}
+
+.ruleta__settings {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+}
+
+.ruleta__settings button, .ruleta__settings p {
+  display: inline-block;
+  font-size: 18px;
+}
+
+.ruleta__settings p {
+  margin: 0 10px;
+}
+
+.ruleta__settings .button-size {
+  background-color: transparent;
+  border: 1px solid white;
+  padding: 0.2em;
+  padding-top: 0.18em;
+  color: white;
+  width: 1.5em;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.button-about {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  border: 1px solid white;
+  background-color: transparent;
+  padding: 0;
+  font-size: 10px;
+  font-family: monospace;
+  color: white;
+  border-radius: 50%;
+  margin-left: 25px;
+  position: relative;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.button-about:hover {
+  background-color: #444;
+}
+
+.button-about:active {
+  background-color: white;
+  color: black;
+}
+
+#about-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 15px;
+  overflow: auto;
+  background-color: #252525;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  z-index: 10;
+}
+
+#about-page * {
+  font-family: monospace;
+}
+
+#about-page h1, #about-page h2, #about-page h3, #about-page h4 {
+  margin-top: 1em;
+}
+
+#about-page p {
+  margin: 1em 0;
+}
+
+#about-page.--active {
+  pointer-events: all;
+  opacity: 1;
+}
+
+#about-page .container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+a {
+  color: #eb2;
+}
+
+</style>
+  <main class="ruleta">
+    <div class="ruleta__container">
+      <aside class="ruleta__options">
+        <button class="button-toggle-list" data-active=".ruleta__options"> ↔︎ </button>
+        <div class="ruleta__scroller">
+          <ul class="ruleta__list">
+            <li class="ruleta__option --disabled --current"
+                data-title="This 1 title"
+                data-subtitle="This 1 subtitle"
+                data-uptitle="This 1 uptitle">
+              <button data-option> This is some option </button>
+              <button class="button-remove" data-remove>
+                X
+              </button>
+            </li>
+            <li class="ruleta__option"
+                data-title="This 2 title"
+                data-subtitle="This 2 subtitle"
+                data-uptitle="This 2 uptitle">
+              <button data-option> This is some option </button>
+              <button class="button-remove" data-remove>
+                X
+              </button>
+            </li>
+            <li class="ruleta__option"
+                data-title="This 3 title"
+                data-subtitle="This 3 subtitle"
+                data-uptitle="This 3 uptitle">
+              <button data-option> This is some option </button>
+              <button class="button-remove" data-remove>
+                X
+              </button>
+            </li>
+            <li class="ruleta__option"
+                data-title="This 4 title"
+                data-subtitle="This 4 subtitle"
+                data-uptitle="This 4 uptitle">
+              <button data-option> This is some option </button>
+              <button class="button-remove" data-remove>
+                X
+              </button>
+            </li>
+            <li class="ruleta__option"
+                data-title="This 5 title"
+                data-subtitle="This 5 subtitle"
+                data-uptitle="This 5 uptitle">
+              <button data-option> This is some option </button>
+              <button class="button-remove" data-remove>
+                X
+              </button>
+            </li>
+          </ul>
+          <button class="button-add" data-add> +Add </button>
+        </div>
+      </aside>
+      <section class="ruleta__answer">
+        <div class="ruleta__answer__container" style="font-size:15px;">
+          <h2 class="uptitle" contenteditable data-edit="uptitle"> This is some uptitle </h2>
+          <h1 class="title" contenteditable data-edit="title"> This is some Title </h1>
+          <p class="subtitle" contenteditable data-edit="subtitle"> This is some subtitle </p>
+        </div>
+        <section class="ruleta__controls">
+          <button class="button-control button-toggle-state" data-toggle>
+            Toggle
+          </button>
+          <button class="button-control button-spin" data-spin>
+            Spin
+          </button>
+        </section>
+        <section class="ruleta__settings">
+          <button class="button-size" data-zoom="false"> - </button>
+            <p> zoom </p>
+          <button class="button-size" data-zoom="true"> + </button>
+          <button class="button-about" data-active="#about-page"> i </button>
+        </section>
+      </section>
+    </div>
+    <div id="about-page">
+      <div class="container">
+        <h2> Randomizer V1 </h2>
+        <p><i> By Ismael Villegas, 29/01/2020, ~4 hours of work. </i></p>
+        <p> This is a single-page application. You can download it to save your settings and options. </p>
+        <p> Learn more about my work <a href="http://ismaelvillegas.com"> here </a></p>
+      </div>
+    </div>
+  </main>
+  <script>
+  window.addEventListener("keydown", function(e){
+  if (!e) e = window.event;
+  var keyCode = e.keyCode || e.which;
+  console.log(keyCode);
+  if (keyCode == '13'){
+    spinOptions();
+    return false;
+  }
+  if (keyCode == '16'){
+    toggleCurrentOption();
+    return false;
+  }
+});
+
+zoom = document.querySelectorAll('[data-zoom]');
+for( let i = 0; i < zoom.length; i++) {
+  zoom[i].addEventListener('click', () => {
+    growth = zoom[i].getAttribute('data-zoom');
+    const container = document.querySelector('.ruleta__answer__container');
+    let fontSize = parseInt(container.style.fontSize);
+    if(growth == 'true') fontSize++;
+    else fontSize--;
+    container.style.fontSize = fontSize + 'px';
+  });
+}
+
+function spinOptions() {
+  const options = document.querySelectorAll('.ruleta__option:not(.--disabled)');
+  document.querySelector('[data-spin]').classList.add('--active');
+  var interval = setInterval(() => {
+    const total = options.length;
+    const random = Math.floor(Math.random() * total)
+    chooseAvailableOption(random);
+  }, 100);
+
+  setTimeout(() => {
+    clearInterval(interval);
+    document.querySelector('[data-spin]').classList.remove('--active');
+  }, 3000);
+}
+
+spin = document.querySelectorAll('[data-spin]');
+for( let i = 0; i < zoom.length; i++) {
+  if(typeof spin[i] === 'undefined') continue;
+  spin[i].addEventListener('click', () => {
+    spinOptions();
+  });
+}
+
+toggle = document.querySelector('[data-toggle]');
+toggle.addEventListener('click', () => {
+  toggleCurrentOption();
+});
+
+function toggleCurrentOption() {
+  document.querySelector('[data-toggle]').classList.add('--active');
+  element = document.querySelector('.ruleta__option.--current');
+  if(element.classList.contains('--disabled')) {
+    element.classList.remove('--disabled');
+  } else {
+    element.classList.add('--disabled');
+  }
+  setTimeout(() => {
+    document.querySelector('[data-toggle]').classList.remove('--active');
+  }, 100);
+}
+
+edit = document.querySelectorAll('[data-edit]');
+for( let i = 0; i < edit.length; i++) {
+  edit[i].addEventListener('blur', () => {
+    field = edit[i].getAttribute('data-edit');
+    html = edit[i].innerHTML;
+    document.querySelector('.ruleta__option.--current').setAttribute('data-' + field, html);
+    if(field == 'title') {
+      document.querySelector('.ruleta__option.--current [data-option]').innerHTML = html;
+    }
+  });
+}
+
+dataActive = document.querySelectorAll('[data-active]');
+for( let i = 0; i < dataActive.length; i++) {
+  dataActive[i].addEventListener('click', () => {
+    selector = dataActive[i].getAttribute('data-active');
+    element = document.querySelector(selector);
+    if(element.classList.contains('--active')) {
+      element.classList.remove('--active');
+    } else {
+      element.classList.add('--active');
+    }
+  });
+}
+
+remove = document.querySelectorAll('[data-remove]');
+for( let i = 0; i < remove.length; i++) {
+  remove[i].addEventListener('click', () => {
+    remove[i].parentNode.remove();
+  });
+}
+
+document.addEventListener('click',function(e){
+  if(e.target && e.target.hasAttribute('data-option')){
+    element = e.target.parentNode;
+    array = document.querySelectorAll('.ruleta__option');
+    index = getIndexOf(element, array);
+    chooseOption(index);
+   }
+});
+
+function getIndexOf(element, array) {
+  for( let i = 0; i < array.length; i++) {
+    if(element == array[i]) return i;
+  }
+}
+
+add = document.querySelectorAll('[data-add]');
+for( let i = 0; i < add.length; i++) {
+  add[i].addEventListener('click', () => {
+    document.querySelector('.ruleta__list').insertAdjacentHTML('beforeend', `<li class="ruleta__option"
+    data-title="This new title"
+    data-subtitle="This new subtitle"
+    data-uptitle="This new uptitle">
+  <button data-option> This new title </button>
+  <button class="button-remove" data-remove>
+    X
+  </button>
+</li>`)
+  });
+}
+
+
+function chooseAvailableOption(index) {
+  const allOptions = document.querySelectorAll('.ruleta__option');
+  removeClass(allOptions, '--current');
+  const options = document.querySelectorAll('.ruleta__option:not(.--disabled)');
+  options[index].classList.add('--current');
+
+  const title = options[index].getAttribute('data-title');
+  const uptitle = options[index].getAttribute('data-uptitle');
+  const subtitle = options[index].getAttribute('data-subtitle');
+
+  document.querySelector('.title').innerHTML = title;
+  document.querySelector('.subtitle').innerHTML = subtitle;
+  document.querySelector('.uptitle').innerHTML = uptitle;
+}
+
+function chooseOption(index) {
+  const options = document.querySelectorAll('.ruleta__option');
+  removeClass(options, '--current');
+  options[index].classList.add('--current');
+
+  const title = options[index].getAttribute('data-title');
+  const uptitle = options[index].getAttribute('data-uptitle');
+  const subtitle = options[index].getAttribute('data-subtitle');
+
+  document.querySelector('.title').innerHTML = title;
+  document.querySelector('.subtitle').innerHTML = subtitle;
+  document.querySelector('.uptitle').innerHTML = uptitle;
+}
+
+function removeClass(arr, cls) {
+  for( let i = 0; i < arr.length; i++) {
+    arr[i].classList.remove(cls);
+  }
+}
+  </script>
+</body>
+</html>

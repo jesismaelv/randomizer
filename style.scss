@@ -1,0 +1,291 @@
+* {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  box-sizing: border-box;
+  outline-color: transparent;
+  outline-style: none;
+  outline-width: 0px;
+  &:focus, &:hover {
+    outline-color: transparent;
+    outline-style: none;
+    outline-width: 0px;
+  }
+}
+
+body {
+  background-color: #252525;
+  color: white;
+}
+
+.ruleta__container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.button-toggle-list {
+  position: absolute;
+  top: 20px;
+  right: -50px;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 0 50% 50% 0;
+  &:hover {
+    background-color: #666;
+    cursor: pointer;
+  }
+}
+
+.ruleta__scroller {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 100px;
+  overflow: auto;
+}
+
+.ruleta__options {
+  position: relative;
+  background-color: #333;
+  width: 0;
+  transition: opacity 0.5s ease;
+  &.--active {
+    padding: 15px;
+    width: 33%;
+    min-width: 250px;
+    max-width: 400px;
+    .button-add {
+      display: inline-block;
+    }
+  }
+  .button-add {
+    display: none;
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+}
+
+
+@media screen and (min-width: 0) and (max-width: 600px) {
+  .ruleta__options {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+  }
+}
+
+.ruleta__list {
+  width: 100%;
+  list-style: none;
+}
+
+.ruleta__option {
+  background-color: #444;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+  border: 1px solid #444;
+  [data-option] {
+    background-color: transparent;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    font-size: 15px;
+    color: white;
+    padding: 1em 0.5em;
+  }
+  &:hover {
+    background-color: #666;
+    cursor: pointer;
+  }
+  &.--disabled {
+    opacity: 0.3;
+    box-shadow: none;
+  }
+  &.--current {
+    border: 1px solid white;
+  }
+  &.--chosen {
+    border: 1px solid #093;
+  }
+}
+
+.button-remove {
+  color: white;
+  position: absolute;
+  right: 0px;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  background-color: transparent;
+  border: none;
+  font-family: monospace;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 10px;
+  text-align: center;
+  background-color: #555;
+  &:hover {
+    background-color: #777;
+  }
+  &:active {
+    background-color: #f33;
+  }
+}
+
+.button-add, .button-control {
+  display: inline-block;
+  background-color: #093;
+  font-size: 12px;
+  padding: 0.8em 0.8em 0.7em;
+  border-radius: 10px;
+  border: 0px solid transparent;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover {
+    background-color: #071;
+  }
+  &:active, &.--active {
+    background-color: #050;
+  }
+}
+
+.ruleta__answer {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.ruleta__answer__container {
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  font-size: 15px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.uptitle {
+  font-size: 1.1em;
+  font-weight: normal;
+  color: #CCC;
+}
+
+.title {
+  font-size: 1.6em;
+  margin: 0.5em 0;
+}
+
+.subtitle {
+  color: #CCC;
+  font-size: 0.9em;
+  font-weight: normal;
+}
+
+.ruleta__controls {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+}
+
+.ruleta__settings {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  button, p {
+    display: inline-block;
+    font-size: 18px;
+  }
+  p {
+    margin: 0 10px;
+  }
+  .button-size {
+    background-color: transparent;
+    border: 1px solid white;
+    padding: 0.2em;
+    padding-top: 0.18em;
+    color: white;
+    width: 1.5em;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+}
+
+.button-about {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  border: 1px solid white;
+  background-color: transparent;
+  padding: 0;
+  font-size: 10px;
+  font-family: monospace;
+  color: white;
+  border-radius: 50%;
+  margin-left: 25px;
+  position: relative;
+  cursor: pointer;
+  &:hover {
+    background-color: #444;
+  }
+  &:active {
+    background-color: white;
+    color: black;
+  }
+  z-index: 100;
+}
+
+#about-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 15px;
+  overflow: auto;
+  background-color: #252525;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.5s ease;
+  * {
+    font-family: monospace;
+  }
+  h1, h2, h3, h4 {
+    margin-top: 1em;
+  }
+  p {
+    margin: 1em 0;
+  }
+  &.--active {
+    pointer-events: all;
+    opacity: 1;
+  }
+  .container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  z-index: 10;
+}
+
+a {
+  color: #eb2;
+}

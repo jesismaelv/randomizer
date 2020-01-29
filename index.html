@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
+  <title> Ruleta Pro </title>
+</head>
+<body class="ruleta__wrapper">
+  <main class="ruleta">
+    <div class="ruleta__container">
+      <aside class="ruleta__options">
+        <button class="button-toggle-list" data-active=".ruleta__options"> ↔︎ </button>
+        <div class="ruleta__scroller">
+          <ul class="ruleta__list">
+            <li class="ruleta__option --disabled --current"
+                data-title="This 1 title"
+                data-subtitle="This 1 subtitle"
+                data-uptitle="This 1 uptitle">
+              <button data-option> This is some option </button>
+              <button class="button-remove" data-remove>
+                X
+              </button>
+            </li>
+            <li class="ruleta__option"
+                data-title="This 2 title"
+                data-subtitle="This 2 subtitle"
+                data-uptitle="This 2 uptitle">
+              <button data-option> This is some option </button>
+              <button class="button-remove" data-remove>
+                X
+              </button>
+            </li>
+            <li class="ruleta__option"
+                data-title="This 3 title"
+                data-subtitle="This 3 subtitle"
+                data-uptitle="This 3 uptitle">
+              <button data-option> This is some option </button>
+              <button class="button-remove" data-remove>
+                X
+              </button>
+            </li>
+            <li class="ruleta__option"
+                data-title="This 4 title"
+                data-subtitle="This 4 subtitle"
+                data-uptitle="This 4 uptitle">
+              <button data-option> This is some option </button>
+              <button class="button-remove" data-remove>
+                X
+              </button>
+            </li>
+            <li class="ruleta__option"
+                data-title="This 5 title"
+                data-subtitle="This 5 subtitle"
+                data-uptitle="This 5 uptitle">
+              <button data-option> This is some option </button>
+              <button class="button-remove" data-remove>
+                X
+              </button>
+            </li>
+          </ul>
+          <button class="button-add" data-add> +Add </button>
+        </div>
+      </aside>
+      <section class="ruleta__answer">
+        <div class="ruleta__answer__container" style="font-size:15px;">
+          <h2 class="uptitle" contenteditable data-edit="uptitle"> This is some uptitle </h2>
+          <h1 class="title" contenteditable data-edit="title"> This is some Title </h1>
+          <p class="subtitle" contenteditable data-edit="subtitle"> This is some subtitle </p>
+        </div>
+        <section class="ruleta__controls">
+          <button class="button-control button-toggle-state" data-toggle>
+            Toggle
+          </button>
+          <button class="button-control button-spin" data-spin>
+            Spin
+          </button>
+        </section>
+        <section class="ruleta__settings">
+          <button class="button-size" data-zoom="false"> - </button>
+            <p> zoom </p>
+          <button class="button-size" data-zoom="true"> + </button>
+          <button class="button-about" data-active="#about-page"> i </button>
+        </section>
+      </section>
+    </div>
+    <div id="about-page">
+      <div class="container">
+        <h2> Randomizer V1 </h2>
+        <p><i> By Ismael Villegas, 29/01/2020, ~4 hours of work. </i></p>
+        <p> This is a single-page application. You can download it to save your settings and options. </p>
+        <p> Learn more about my work <a href="http://ismaelvillegas.com"> here </a></p>
+      </div>
+    </div>
+  </main>
+  <script src="functions.js"></script>
+</body>
+</html>
